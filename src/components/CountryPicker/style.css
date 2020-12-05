@@ -10,3 +10,9 @@ option{
     background: '#7E7E7E';
     
 }
+
+@media (max-width:770px){
+    .formControl{   
+        width:80%;
+    }
+}
