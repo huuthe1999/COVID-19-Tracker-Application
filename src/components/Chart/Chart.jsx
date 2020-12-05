@@ -4,7 +4,7 @@ import { Line, Bar } from 'react-chartjs-2';
 
 import './style.css';
 
-const Chart = () => {
+const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
     const [dailyData, setDailyData] = useState([]);
     useEffect(() => {
         const fetchApi = async () => {
@@ -12,9 +12,7 @@ const Chart = () => {
             setDailyData(fetchData);
         };
         fetchApi();
-        console.log(dailyData);
-    }, [dailyData]);// eslint-disable-next-line
-
+    }, []);
 
     const lineChart = (
         dailyData ? (<Line
@@ -23,23 +21,46 @@ const Chart = () => {
                 datasets: [{
                     data: dailyData.map(({ confirmed }) => confirmed),
                     label: 'Infected',
-                    borderColor: '#3333ff',
+                    borderColor: '#8e5ea2',
                     fill: true
                 }, {
                     data: dailyData.map(({ deaths }) => deaths),
                     label: 'Deaths',
-                    borderColor: 'red',
-                    backgroundColor: 'rbga(255,0,0,0.5)',
+                    borderColor: '#3cba9f',
+                    backgroundColor: 'rgba(255,0,0,0.5)',
                     fill: true
-                }]
+                },
+                ]
             }}
         />) : null
 
     );
 
+    const barChart = (
+        confirmed ? (
+            <Bar
+                data={{
+                    labels: ['Infected', 'Recovered', 'Deaths'],
+                    datasets: [{
+                        label: 'People',
+                        backgroundColor: [
+                            'rgba(0, 0, 255,0.5)',
+                            'rgba(0,255, 0 ,0.5)',
+                            'rgba(255,0, 0, 0.5)'],
+                        data: [confirmed.value, recovered.value, deaths.value]
+                    }]
+                }}
+                options={{
+                    legend: { display: false },
+                    title: { display: true, text: `Current state in ${country}` },
+                }}
+            />
+        ) : null
+    );
+
     return (
         <div className="root">
-            {lineChart}
+            {country ? barChart : lineChart}
         </div>
     )
 }

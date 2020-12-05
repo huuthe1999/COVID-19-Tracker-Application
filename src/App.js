@@ -7,6 +7,7 @@ import './style.css';
 
 function App() {
     const [data, setData] = useState(null);
+    const [country, setCountry] = useState('');
 
     useEffect(() => {
         async function fetchDataCovid() {
@@ -14,13 +15,18 @@ function App() {
             setData(fetchedData);
         }
         fetchDataCovid();
-    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
+    const handleChangeCountry = async (country) => {
+        const fetchCountry = await fetchData(country);
+        setData(fetchCountry);
+        setCountry(country);
+    }
     return (
         <div className="container">
             {data && <Card data={data} />}
-            <Chart />
-            <CountryPicker />
+            <CountryPicker handleChangeCountry={handleChangeCountry} />
+            {data && <Chart data={data} country={country} />}
         </div>
     )
 }

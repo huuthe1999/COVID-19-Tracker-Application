@@ -1,0 +1,13 @@
+.formControl{   
+    width:50%;
+    
+}
+
+.select{
+    font-weight:700 !important;
+}
+
+option{
+    background: '#7E7E7E';
+    
+}
